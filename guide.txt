@@ -1,0 +1,103 @@
+Passo 1: Criar um novo projeto React
+
+Abra o terminal e instale o create-react-app, caso ainda não o tenha instalado:
+
+npx create-react-app nome-do-projeto
+Após a instalação, entre na pasta do projeto:
+
+cd nome-do-projeto
+Passo 2: Instalar dependências
+
+Instale o react-router-dom para gerenciar as rotas:
+
+npm install react-router-dom
+Passo 3: Estrutura de pastas recomendada
+
+Dentro da pasta src, crie a seguinte estrutura de pastas:
+
+src
+├── components
+│   ├── App
+│   │   ├── App.js
+│   │   └── App.css
+│   └── ...
+├── pages
+│   ├── HomePage
+│   │   ├── HomePage.js
+│   │   └── HomePage.css
+│   └── ...
+├── services
+│   └── api.js
+├── utils
+│   └── ...
+└── index.js
+components: Arquivos de componentes reutilizáveis e suas folhas de estilo.
+pages: Componentes de nível de página, que são carregados com base nas rotas.
+services: Funções que lidam com a lógica de comunicação com a API.
+utils: Funções utilitárias.
+Passo 4: Configurar rotas
+
+Em src/components/App/App.js, importe o BrowserRouter, Route e Switch do react-router-dom. Defina as rotas para suas páginas.
+
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import HomePage from '../../pages/HomePage/HomePage';
+import './App.css';
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          {/* Adicione outras rotas aqui */}
+        </Switch>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+Passo 5: Criar componente HomePage
+
+No arquivo src/pages/HomePage/HomePage.js, crie o componente HomePage que irá utilizar o useState e o useEffect para gerenciar o estado dos dados e buscar os dados da API.
+
+import React, { useState, useEffect } from 'react';
+import { fetchData } from '../../services/api';
+import './HomePage.css';
+
+const HomePage = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchData()
+      .then((response) => setData(response))
+      .catch((error) => console.error(error));
+  }, []);
+
+  return (
+    <div className="HomePage">
+      {/* Renderize os dados aqui */}
+    </div>
+  );
+};
+
+export default HomePage;
+Passo 6: Criar função fetchData
+
+Crie a função fetchData no arquivo src/services/api.js. Essa função será responsável por fazer a chamada à API usando o método fetch.
+
+const API_URL = 'https://api.example.com/data';
+
+export const fetchData = async () => {
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error('Erro ao buscar dados: ', error);
+  }
+};
+Substitua https://api.example.com/data pela URL da API que você deseja conectar.
+
+Agora, você tem um projeto React que se conecta a uma API usando o método fetch, implementa componentes funcionais, rotas, useState e useEffect, e segue uma estrutura de pastas recomendada.
